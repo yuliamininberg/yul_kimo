@@ -1,0 +1,5 @@
+import Link from 'next/link';import {notFound} from 'next/navigation';import {getProducts} from '@/lib/catalog';import type {Locale} from '@/lib/catalog';import {getCopy} from '@/lib/copy';import {ProductGrid} from '@/components/ProductGrid';
+export default async function Home({params}:{params:Promise<{locale:string}>}){const {locale:raw}=await params;if(!['he','en'].includes(raw))notFound();const locale=raw as Locale;const c=getCopy(locale);const products=await getProducts(locale);return <main>
+<section className="hero"><div className="hero-inner"><span className="eyebrow">{c.eyebrow}</span><h1>{c.hero}</h1><p className="hero-copy">{c.intro}</p><Link className="button" href={`/${locale}#collection`}>{c.explore}</Link></div></section>
+<section id="collection" className="section catalog"><div className="section-heading"><span className="eyebrow">YUL · {c.collection}</span><h2>{c.featured}</h2><p>{c.featuredText}</p></div><ProductGrid products={products} locale={locale}/></section>
+<section className="section story"><div className="section-heading"><span className="eyebrow">YUL</span><h2>{c.ourStory}</h2></div><p>{c.story}</p></section></main>}
